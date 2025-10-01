@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { AppLayout } from './shared/layouts/AppLayout'
+import { LoginPage } from './shared/pages/LoginPage'
 import { DashboardPage } from './shared/pages/DashboardPage'
 import { ResidentsPage } from './shared/pages/ResidentsPage'
 import { HomesPage } from './shared/pages/HomesPage'
@@ -19,32 +20,45 @@ import { VehicleTypesPage } from './shared/pages/VehicleTypesPage'
 import { ReportsPage } from './shared/pages/ReportsPage'
 import { SettingsPage } from './shared/pages/SettingsPage'
 import { NotFoundPage } from './shared/pages/NotFoundPage'
+import { PrivateRoute } from './shared/components/PrivateRoute'
 
 // Definimos las rutas principales del sistema, enfocadas a un solo condominio.
 export const router = createBrowserRouter([
+  // Ruta pública de login
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  // Rutas protegidas (requieren autenticación)
   {
     path: '/',
-    element: <AppLayout />,
+    element: <PrivateRoute />,
     children: [
-      { index: true, element: <DashboardPage /> },
-      { path: 'residentes', element: <ResidentsPage /> },
-      { path: 'viviendas', element: <HomesPage /> },
-      { path: 'parqueos', element: <ParkingPage /> },
-      { path: 'visitantes', element: <VisitorsPage /> },
-      { path: 'visitas', element: <VisitsPage /> },
-      { path: 'mascotas', element: <PetsPage /> },
-      { path: 'asignaciones-parqueo', element: <ParkingAssignmentsPage /> },
-      { path: 'reservas', element: <ReservationsPage /> },
-      { path: 'areas', element: <AreasPage /> },
-      { path: 'expensas', element: <ExpensesPage /> },
-      { path: 'pagos', element: <PaymentsPage /> },
-      { path: 'multas', element: <FinesPage /> },
-      { path: 'comunicados', element: <CommunicationsPage /> },
-      { path: 'vehiculos', element: <VehiclesPage /> },
-      { path: 'tipos-vehiculo', element: <VehicleTypesPage /> },
-      { path: 'reportes', element: <ReportsPage /> },
-      { path: 'configuracion', element: <SettingsPage /> },
-      { path: '*', element: <NotFoundPage /> },
+      {
+        path: '/',
+        element: <AppLayout />,
+        children: [
+          { index: true, element: <DashboardPage /> },
+          { path: 'residentes', element: <ResidentsPage /> },
+          { path: 'viviendas', element: <HomesPage /> },
+          { path: 'parqueos', element: <ParkingPage /> },
+          { path: 'visitantes', element: <VisitorsPage /> },
+          { path: 'visitas', element: <VisitsPage /> },
+          { path: 'mascotas', element: <PetsPage /> },
+          { path: 'asignaciones-parqueo', element: <ParkingAssignmentsPage /> },
+          { path: 'reservas', element: <ReservationsPage /> },
+          { path: 'areas', element: <AreasPage /> },
+          { path: 'expensas', element: <ExpensesPage /> },
+          { path: 'pagos', element: <PaymentsPage /> },
+          { path: 'multas', element: <FinesPage /> },
+          { path: 'comunicados', element: <CommunicationsPage /> },
+          { path: 'vehiculos', element: <VehiclesPage /> },
+          { path: 'tipos-vehiculo', element: <VehicleTypesPage /> },
+          { path: 'reportes', element: <ReportsPage /> },
+          { path: 'configuracion', element: <SettingsPage /> },
+          { path: '*', element: <NotFoundPage /> },
+        ],
+      },
     ],
   },
 ])

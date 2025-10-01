@@ -1,0 +1,83 @@
+# 🤖 PROMPT PARA CLAUDE DEL BACKEND
+
+Copia y pega esto al otro Claude que trabaja en el backend:
+
+---
+
+Hola, soy Claude trabajando en un sistema de condominio con Django REST Framework. 
+
+**Contexto:**
+- Tengo un backend Django funcional con varios endpoints CRUD
+- Los modelos están en la app `core`
+- Actualmente NO hay autenticación, todos los endpoints están abiertos
+- Necesito implementar un sistema completo de autenticación con JWT
+
+**Mi tarea:**
+Implementar sistema de login/usuarios con JWT siguiendo EXACTAMENTE las instrucciones del documento adjunto.
+
+**Ubicación del código:**
+- Backend: `c:\Users\eduardo\Downloads\CondominioULT\CONDOMINIO\backend`
+- Proyecto Django: `CONDOMINIO`
+- App principal: `core`
+
+**Requisitos:**
+1. Crear app `usuarios` con modelo Usuario personalizado (heredando de AbstractUser)
+2. Configurar JWT con djangorestframework-simplejwt
+3. Crear endpoints: /auth/login/, /auth/logout/, /auth/me/, /auth/change-password/
+4. Crear ViewSet para CRUD de usuarios (solo admin)
+5. Migrar base de datos (PostgreSQL en Azure)
+6. Crear superusuario inicial
+7. Probar que todo funcione
+
+**Documento con instrucciones completas:**
+```
+Frontend/docs/INSTRUCCIONES-PARA-BACKEND.md
+```
+
+**Roles del sistema:**
+- SUPER_ADMIN: Acceso total
+- ADMIN: Administrador del condominio
+- CONTADOR: Acceso a finanzas
+- GUARDIA: Control de visitas
+- RESIDENTE: Usuario final
+
+**IMPORTANTE:**
+- NO tocar la base de datos manualmente, solo usar migraciones de Django
+- NO cambiar los modelos existentes en `core`
+- Todos los endpoints actuales deben quedar protegidos excepto login
+- CORS ya está configurado, solo agregar CORS_ALLOW_CREDENTIALS = True
+
+**Estructura que debo crear:**
+```
+backend/
+├── usuarios/               # ✅ Nueva app
+│   ├── models.py          # Modelo Usuario
+│   ├── serializers.py     # ✅ Nuevo archivo
+│   ├── views.py           # Views de auth
+│   ├── urls.py            # ✅ Nuevo archivo
+│   └── admin.py           # Admin de usuarios
+├── CONDOMINIO/
+│   ├── settings.py        # Modificar (agregar JWT, AUTH_USER_MODEL)
+│   └── api_urls.py        # Modificar (incluir usuarios.urls)
+└── requirements.txt       # Actualizar
+```
+
+**Resultado esperado:**
+- Endpoint `POST /api/auth/login/` que retorne tokens JWT
+- Endpoint `GET /api/auth/me/` que retorne usuario autenticado
+- Superusuario `admin` con rol SUPER_ADMIN creado
+- Todos los endpoints protegidos con autenticación
+
+**Cuando termines:**
+1. Confirmar que login funciona con curl
+2. Confirmar que /auth/me/ funciona con token
+3. Hacer commit y push
+4. Reportar cualquier error
+
+Por favor, sigue las instrucciones del documento paso a paso y confirma cuando cada paso esté completo.
+
+¿Estás listo para empezar?
+
+---
+
+**NOTA:** El documento `INSTRUCCIONES-PARA-BACKEND.md` tiene TODO el código listo para copiar y pegar.
