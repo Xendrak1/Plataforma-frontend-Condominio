@@ -25,20 +25,15 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install --production
+          npm install
           npm run build
           npm run test --if-present
-      
-      - name: Zip artifact for deployment
-        run: |
-          tar -czf node-app.tar.gz --exclude='.git' --exclude='.github' .
-        shell: bash
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: node-app.tar.gz
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,12 +47,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      
-      - name: Extract artifact
-        run: |
-          tar -xzf node-app.tar.gz
-          rm node-app.tar.gz
-        shell: bash
       
       - name: Login to Azure
         uses: azure/login@v2
