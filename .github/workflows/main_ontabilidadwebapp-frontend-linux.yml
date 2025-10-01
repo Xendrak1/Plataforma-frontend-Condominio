@@ -71,18 +71,13 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D331741FD651427090C6367C150087CB }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D2C012FD04584DE59F9BFCE0379F31F2 }}
 
-      - name: Configure App Settings for Run-From-Package
-        run: |
-          az webapp config appsettings set \
-            --resource-group rg-condominio \
-            --name ontabilidadwebapp-frontend-linux \
-            --settings \
-              WEBSITE_RUN_FROM_PACKAGE=1 \
-              SCM_DO_BUILD_DURING_DEPLOYMENT=false \
-              NODE_ENV=production
-          
-          # Esperar para evitar conflictos de SCM
-          sleep 30
+      # NOTA: Las App Settings deben configurarse manualmente en Azure Portal:
+      # WEBSITE_RUN_FROM_PACKAGE=1
+      # SCM_DO_BUILD_DURING_DEPLOYMENT=false
+      # NODE_ENV=production
+      
+      - name: Wait before deployment to avoid SCM conflicts
+        run: sleep 15
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
