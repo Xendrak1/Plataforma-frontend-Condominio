@@ -20,6 +20,8 @@ import { VehicleTypesPage } from './shared/pages/VehicleTypesPage'
 import { ReportsPage } from './shared/pages/ReportsPage'
 import { SettingsPage } from './shared/pages/SettingsPage'
 import { UsersPage } from './shared/pages/UsersPage'
+import { UserProfilePage } from './shared/pages/UserProfilePage'
+import { ChangePasswordPage } from './shared/pages/ChangePasswordPage'
 import { NotFoundPage } from './shared/pages/NotFoundPage'
 import { PrivateRoute } from './shared/components/PrivateRoute'
 
@@ -57,6 +59,8 @@ export const router = createBrowserRouter([
           { path: 'tipos-vehiculo', element: <VehicleTypesPage /> },
           { path: 'reportes', element: <ReportsPage /> },
           { path: 'usuarios', element: <UsersPage /> },
+          { path: 'perfil', element: <UserProfilePage /> },
+          { path: 'cambiar-contrasena', element: <ChangePasswordPage /> },
           { path: 'configuracion', element: <SettingsPage /> },
           { path: '*', element: <NotFoundPage /> },
         ],

@@ -150,6 +150,33 @@ export function TopBar() {
                 </div>
                 
                 <button
+                  onClick={() => {
+                    setShowMenu(false)
+                    navigate('/perfil')
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    background: 'transparent',
+                    border: 'none',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    fontSize: '0.875rem',
+                    color: '#374151',
+                    fontWeight: '500',
+                    transition: 'background 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#f9fafb'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent'
+                  }}
+                >
+                  👤 Mi Perfil
+                </button>
+
+                <button
                   onClick={handleLogout}
                   disabled={loggingOut}
                   style={{
