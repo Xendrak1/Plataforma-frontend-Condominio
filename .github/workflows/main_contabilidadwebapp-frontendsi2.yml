@@ -62,4 +62,5 @@ jobs:
           app-name: 'contabilidadwebapp-frontendsi2'
           slot-name: 'Production'
           package: .
+          startup-command: 'node server.mjs'
           
