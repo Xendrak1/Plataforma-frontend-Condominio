@@ -1,9 +1,5 @@
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const express = require('express');
+const path = require('path');
 
 const app = express();
 
@@ -15,9 +11,9 @@ console.log('Environment:', process.env.NODE_ENV);
 
 // Servir archivos estáticos de la carpeta dist
 app.use(express.static(distPath, {
-  setHeaders: (res, path) => {
+  setHeaders: (res, filePath) => {
     // Cache para assets compilados (con hash en el nombre)
-    if (path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
+    if (filePath.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     }
   }
