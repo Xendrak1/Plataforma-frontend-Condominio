@@ -25,20 +25,20 @@ import { ChangePasswordPage } from './shared/pages/ChangePasswordPage'
 import { NotFoundPage } from './shared/pages/NotFoundPage'
 import { PrivateRoute } from './shared/components/PrivateRoute'
 
-// Definimos las rutas principales del sistema, enfocadas a un solo condominio.
+// DEMO VERSION - Sin autenticación para presentación
 export const router = createBrowserRouter([
-  // Ruta pública de login
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  // Rutas protegidas (requieren autenticación)
+  // Ruta pública de login (desactivada para demo)
+  // {
+  //   path: '/login',
+  //   element: <LoginPage />,
+  // },
+  // Rutas públicas (sin autenticación para demo)
   {
     path: '/',
-    element: <PrivateRoute />,
-    children: [
-      {
-        path: '/',
+    // element: <PrivateRoute />,  // DESACTIVADO PARA DEMO
+    // children: [
+    //   {
+    //     path: '/',
         element: <AppLayout />,
         children: [
           { index: true, element: <DashboardPage /> },
@@ -64,8 +64,8 @@ export const router = createBrowserRouter([
           { path: 'configuracion', element: <SettingsPage /> },
           { path: '*', element: <NotFoundPage /> },
         ],
-      },
-    ],
+      // },
+    // ],
   },
 ])
 
