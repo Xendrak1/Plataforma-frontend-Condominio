@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useCreateVisit } from '../../features/visits/hooks'
+import { useRegisterEntry } from '../../features/visits/hooks'
 import { useVisitors } from '../../features/visits/hooks'
 import { useHomes } from '../../features/homes/hooks'
 import { Icon } from './icons'
@@ -15,12 +15,11 @@ export function CreateVisitModal({ isOpen, onClose }: CreateVisitModalProps) {
   const [formData, setFormData] = useState({
     visitante_id: '',
     vivienda_destino_id: '',
-    entrada: '',
-    salida: ''
+    medio: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   
-  const createVisit = useCreateVisit()
+  const registerEntry = useRegisterEntry()
   const { data: visitors, isLoading: isLoadingVisitors, error: visitorsError } = useVisitors()
   const { data: homes, isLoading: isLoadingHomes, error: homesError } = useHomes()
 
@@ -29,21 +28,19 @@ export function CreateVisitModal({ isOpen, onClose }: CreateVisitModalProps) {
     setIsSubmitting(true)
     
     try {
-      await createVisit.mutateAsync({
+      await registerEntry.mutateAsync({
         visitante_id: parseInt(formData.visitante_id),
         vivienda_destino_id: parseInt(formData.vivienda_destino_id),
-        entrada: formData.entrada,
-        salida: formData.salida || undefined
+        medio: formData.medio || undefined
       })
       setFormData({ 
         visitante_id: '', 
         vivienda_destino_id: '', 
-        entrada: '', 
-        salida: '' 
+        medio: '' 
       })
       onClose()
     } catch (error) {
-      console.error('Error al crear visita:', error)
+      console.error('Error al registrar entrada:', error)
     } finally {
       setIsSubmitting(false)
     }
@@ -224,7 +221,7 @@ export function CreateVisitModal({ isOpen, onClose }: CreateVisitModalProps) {
               )}
             </div>
 
-            {/* Fecha y Hora de Entrada */}
+            {/* Medio de transporte */}
             <div>
               <label style={{
                 display: 'block',
@@ -233,50 +230,14 @@ export function CreateVisitModal({ isOpen, onClose }: CreateVisitModalProps) {
                 color: '#374151',
                 marginBottom: '0.5rem'
               }}>
-                Fecha y Hora de Entrada *
+                Medio de Transporte
               </label>
               <input
-                type="datetime-local"
-                name="entrada"
-                value={formData.entrada}
+                type="text"
+                name="medio"
+                value={formData.medio}
                 onChange={handleChange}
-                required
-                style={{
-                  width: '100%',
-                  padding: '0.75rem 1rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  fontSize: '0.875rem',
-                  transition: 'all 0.15s ease',
-                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#3b82f6'
-                  e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#d1d5db'
-                  e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)'
-                }}
-              />
-            </div>
-
-            {/* Fecha y Hora de Salida */}
-            <div>
-              <label style={{
-                display: 'block',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-                color: '#374151',
-                marginBottom: '0.5rem'
-              }}>
-                Fecha y Hora de Salida
-              </label>
-              <input
-                type="datetime-local"
-                name="salida"
-                value={formData.salida}
-                onChange={handleChange}
+                placeholder="Ej: Auto, Bicicleta, Peatón"
                 style={{
                   width: '100%',
                   padding: '0.75rem 1rem',
