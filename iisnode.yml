@@ -1,0 +1,5 @@
+# Configuración de iisnode para Azure App Service
+node_env: production
+loggingEnabled: true
+devErrorsEnabled: false
+nodeProcessCountPerApplication: 1
