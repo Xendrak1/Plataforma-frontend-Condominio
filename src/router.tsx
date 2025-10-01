@@ -19,6 +19,7 @@ import { VehiclesPage } from './shared/pages/VehiclesPage'
 import { VehicleTypesPage } from './shared/pages/VehicleTypesPage'
 import { ReportsPage } from './shared/pages/ReportsPage'
 import { SettingsPage } from './shared/pages/SettingsPage'
+import { UsersPage } from './shared/pages/UsersPage'
 import { NotFoundPage } from './shared/pages/NotFoundPage'
 import { PrivateRoute } from './shared/components/PrivateRoute'
 
@@ -55,6 +56,7 @@ export const router = createBrowserRouter([
           { path: 'vehiculos', element: <VehiclesPage /> },
           { path: 'tipos-vehiculo', element: <VehicleTypesPage /> },
           { path: 'reportes', element: <ReportsPage /> },
+          { path: 'usuarios', element: <UsersPage /> },
           { path: 'configuracion', element: <SettingsPage /> },
           { path: '*', element: <NotFoundPage /> },
         ],

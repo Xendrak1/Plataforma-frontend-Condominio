@@ -19,6 +19,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Vehículos', path: '/vehiculos' },
   { label: 'Tipos de Vehículo', path: '/tipos-vehiculo' },
   { label: 'Reportes', path: '/reportes' },
+  { label: 'Usuarios', path: '/usuarios' },
   { label: 'Configuración', path: '/configuracion' },
 ]
 
