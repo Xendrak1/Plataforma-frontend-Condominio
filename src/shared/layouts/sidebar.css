@@ -1,0 +1,153 @@
+.sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 260px;
+	padding: 16px 16px 16px 16px; /* padding derecho para calcular fusión */
+	background: #3f2a7c; /* morado oscuro */
+	color: #e5e7eb;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden; /* ocultar scroll en el contenedor principal */
+}
+
+/* Banda blanca continua curva en todo el alto (simula la unión) */
+/* sin banda adicional: dejamos borde limpio */
+.sidebar::before { display: none; }
+
+/* No usamos after */
+.sidebar::after { display: none; }
+
+.brand {
+	margin-bottom: 24px;
+	color: #ffffff;
+	flex-shrink: 0; /* no se encoge, se mantiene fijo */
+}
+
+.brandSubtitle {
+	font-size: 12px;
+	opacity: 0.8;
+}
+
+.menu {
+	display: grid;
+	gap: 8px;
+	flex: 1; /* ocupa el espacio restante */
+	overflow-y: auto; /* permitir scroll solo en el menú */
+	overflow-x: hidden;
+	padding-right: 8px; /* espacio para el scrollbar */
+}
+
+.navLink {
+	display: block;
+	padding: 12px 16px;
+	color: #d1d5db;
+	text-decoration: none;
+	border-radius: 8px;
+    transition: all 150ms ease;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.navLink:hover { 
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transform: translateX(2px);
+}
+
+.navLink:focus,
+.navLink:focus-visible { outline: none; box-shadow: none; }
+
+.navLinkActive {
+	position: relative;
+	color: #111827;
+	background: #ffffff;
+    border-radius: 9999px; /* vuelve a ser pill completo */
+	padding-left: 20px;
+    margin-right: -14px; /* igual al radio de la "tapa" circular */
+    box-shadow: inset 3px 0 0 0 #5b3bbf; /* rail acorde al morado */
+    z-index: 1;
+}
+
+/* Tapa circular a la derecha para asegurar borde redondo aun invadiendo */
+.navLinkActive::after {
+    content: '';
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    background: #ffffff;
+    border-radius: 50%;
+}
+
+.navLinkActive:hover { background: #ffffff; color: #111827; }
+
+.content {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 260px;
+    padding: 24px 32px;
+    background: #ffffff;
+	color: #111827;
+    z-index: 0;
+    border-top-left-radius: 28px;
+    border-bottom-left-radius: 28px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Estilos para el scrollbar - solo aparece al hacer hover o al scrollear */
+/* Scrollbar personalizado para el contenido */
+.content::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+}
+
+.content::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.content:hover::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* Scrollbar personalizado para el menú */
+.menu::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+}
+
+.menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    transition: background 0.3s;
+}
+
+.menu:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+

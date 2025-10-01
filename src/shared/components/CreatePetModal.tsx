@@ -1,0 +1,438 @@
+import { useState } from 'react'
+import { useCreatePet } from '../../features/pets/hooks'
+import { Icon } from './icons'
+
+interface CreatePetModalProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export function CreatePetModal({ isOpen, onClose }: CreatePetModalProps) {
+  const [formData, setFormData] = useState({
+    nombre: '',
+    tipo: '',
+    raza: '',
+    edad: '',
+    propietario_id: '',
+    vivienda_id: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  
+  const createPet = useCreatePet()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    
+    try {
+      await createPet.mutateAsync({
+        ...formData,
+        edad: formData.edad ? parseInt(formData.edad) : undefined,
+        propietario_id: parseInt(formData.propietario_id),
+        vivienda_id: parseInt(formData.vivienda_id)
+      })
+      setFormData({ nombre: '', tipo: '', raza: '', edad: '', propietario_id: '', vivienda_id: '' })
+      onClose()
+    } catch (error) {
+      console.error('Error al crear mascota:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(0, 0, 0, 0.5)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000
+    }}>
+      <div style={{
+        background: 'white',
+        borderRadius: '16px',
+        padding: '2rem',
+        width: '90%',
+        maxWidth: '500px',
+        maxHeight: '90vh',
+        overflow: 'auto',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+      }}>
+        {/* Header */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '2rem'
+        }}>
+          <h2 style={{
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            color: '#1f2937',
+            margin: 0
+          }}>
+            Nueva Mascota
+          </h2>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              color: '#6b7280',
+              padding: '0.5rem',
+              borderRadius: '8px',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#f3f4f6'
+              e.currentTarget.style.color = '#374151'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'none'
+              e.currentTarget.style.color = '#6b7280'
+            }}
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {/* Nombre */}
+            <div>
+              <label style={{
+                display: 'block',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '0.5rem'
+              }}>
+                Nombre *
+              </label>
+              <input
+                type="text"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleChange}
+                required
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  transition: 'all 0.15s ease',
+                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#3b82f6'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db'
+                  e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+              />
+            </div>
+
+            {/* Tipo */}
+            <div>
+              <label style={{
+                display: 'block',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '0.5rem'
+              }}>
+                Tipo *
+              </label>
+              <select
+                name="tipo"
+                value={formData.tipo}
+                onChange={handleChange}
+                required
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  transition: 'all 0.15s ease',
+                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+                  background: 'white'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#3b82f6'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db'
+                  e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+              >
+                <option value="">Seleccionar tipo...</option>
+                <option value="Perro">Perro</option>
+                <option value="Gato">Gato</option>
+                <option value="Ave">Ave</option>
+                <option value="Reptil">Reptil</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+
+            {/* Raza */}
+            <div>
+              <label style={{
+                display: 'block',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '0.5rem'
+              }}>
+                Raza
+              </label>
+              <input
+                type="text"
+                name="raza"
+                value={formData.raza}
+                onChange={handleChange}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  transition: 'all 0.15s ease',
+                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#3b82f6'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db'
+                  e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+              />
+            </div>
+
+            {/* Edad */}
+            <div>
+              <label style={{
+                display: 'block',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '0.5rem'
+              }}>
+                Edad (años)
+              </label>
+              <input
+                type="number"
+                name="edad"
+                value={formData.edad}
+                onChange={handleChange}
+                min="0"
+                max="30"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  transition: 'all 0.15s ease',
+                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#3b82f6'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db'
+                  e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+              />
+            </div>
+
+            {/* ID Propietario */}
+            <div>
+              <label style={{
+                display: 'block',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '0.5rem'
+              }}>
+                ID Propietario *
+              </label>
+              <input
+                type="number"
+                name="propietario_id"
+                value={formData.propietario_id}
+                onChange={handleChange}
+                required
+                placeholder="ID del propietario"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  transition: 'all 0.15s ease',
+                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#3b82f6'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db'
+                  e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+              />
+            </div>
+
+            {/* ID Vivienda */}
+            <div>
+              <label style={{
+                display: 'block',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '0.5rem'
+              }}>
+                ID Vivienda *
+              </label>
+              <input
+                type="number"
+                name="vivienda_id"
+                value={formData.vivienda_id}
+                onChange={handleChange}
+                required
+                placeholder="ID de la vivienda"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '0.875rem',
+                  transition: 'all 0.15s ease',
+                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#3b82f6'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db'
+                  e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: '1rem',
+            marginTop: '2rem',
+            paddingTop: '1.5rem',
+            borderTop: '1px solid #e5e7eb'
+          }}>
+            <button
+              type="button"
+              onClick={onClose}
+              style={{
+                padding: '0.75rem 1.5rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '8px',
+                background: 'white',
+                color: '#374151',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#f9fafb'
+                e.currentTarget.style.borderColor = '#9ca3af'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'white'
+                e.currentTarget.style.borderColor = '#d1d5db'
+              }}
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              style={{
+                padding: '0.75rem 1.5rem',
+                border: 'none',
+                borderRadius: '8px',
+                background: isSubmitting ? '#9ca3af' : '#f59e0b',
+                color: 'white',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                transition: 'all 0.15s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}
+              onMouseEnter={(e) => {
+                if (!isSubmitting) {
+                  e.currentTarget.style.background = '#d97706'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isSubmitting) {
+                  e.currentTarget.style.background = '#f59e0b'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }
+              }}
+            >
+              {isSubmitting ? (
+                <>
+                  <div style={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid transparent',
+                    borderTop: '2px solid white',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }} />
+                  Creando...
+                </>
+              ) : (
+                <>
+                  <Icon.Plus />
+                  Crear Mascota
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
